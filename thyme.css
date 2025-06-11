@@ -1,0 +1,21 @@
+<style>
+  body {
+    background: #121212;
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+  }
+  .container {
+    background: #1f1f1f;
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 800px;
+    margin: 50px auto;
+    box-shadow: 0 0 20px #00ffc3;
+  }
+  h1, h2 {
+    color: #00ffc3;
+  }
+  a, p {
+    color: #bbb;
+  }
+</style>

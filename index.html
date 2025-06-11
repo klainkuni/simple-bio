@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>sup, im k#####</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: black;
+      overflow-x: hidden;
+      overflow-y: auto;
+      font-family: 'Orbitron', sans-serif;
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff;
+      cursor: pointer;
+    }
+
+    #intro {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 6vw;
+      animation: pulse 1.5s infinite;
+      z-index: 2;
+      text-align: center;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+
+    .container {
+      display: none;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 6vw;
+      border-radius: 16px;
+      max-width: 90vw;
+      margin: 100px auto;
+      box-shadow: 0 0 20px #0ff;
+      animation: fadeIn 1s ease forwards;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      margin: 0 auto 25px;
+      display: block;
+      box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+      border: 2px solid #0ff;
+      object-fit: cover;
+      animation: pulseAvatar 2s infinite;
+    }
+
+    @keyframes pulseAvatar {
+      0%, 100% {
+        box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+      }
+      50% {
+        box-shadow: 0 0 40px #0ff, 0 0 80px #0ff;
+      }
+    }
+
+    h1, h2, p {
+      text-align: center;
+      margin-bottom: 5vw;
+      font-size: 4vw;
+    }
+
+    .footer {
+      margin-top: 6vw;
+      text-align: center;
+      font-size: 3vw;
+      color: #08f8ff;
+    }
+
+    audio {
+      display: block;
+      margin: 0 auto 20px;
+      filter: drop-shadow(0 0 5px #0ff);
+    }
+
+    #volume-control {
+      width: 80%;
+      max-width: 300px;
+      margin: 10px auto 30px;
+      display: block;
+      filter: drop-shadow(0 0 5px #0ff);
+    }
+
+    .icon-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+      font-size: 3.8vw;
+      text-decoration: none;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+
+    .icon-link img {
+      width: 24px;
+      height: 24px;
+      filter: drop-shadow(0 0 5px #0ff);
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    @media (min-width: 768px) {
+      h1, h2, p {
+        font-size: 20px;
+      }
+
+      #intro {
+        font-size: 32px;
+      }
+
+      .footer {
+        font-size: 14px;
+      }
+
+      .icon-link {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body onclick="showBio()">
+  <canvas id="stars"></canvas>
+
+  <div id="intro">click for view</div>
+
+  <div class="container" id="bio">
+    <img class="avatar" src="https://files.catbox.moe/nyaayt.png" alt="avatar">
+    <h1>sup, im k#####</h1>
+
+    <h2>About Me</h2>
+    <p>I love Geometry Dash Ч my hardest is Congregation, 48% so far.</p>
+
+    <h2>Contacts</h2>
+    <a class="icon-link" href="https://t.me/xuqor" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+      @xuqor
+    </a>
+    <a class="icon-link" href="https://discord.com/users/938798079623168050/" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord">
+      Discord Profile
+    </a>
+    <p>Email: ggbratikzp@gmail.com</p>
+
+    <audio id="bgm" autoplay loop>
+      <source src="https://files.catbox.moe/i5b2yf.mp3" type="audio/mpeg" />
+    </audio>
+
+    <input type="range" id="volume-control" min="0" max="1" step="0.01" value="1">
+
+    <div class="footer">© 2025 k#####. All rights reserved.</div>
+  </div>
+
+  <script>
+    function showBio() {
+      document.getElementById('intro').style.display = 'none';
+      document.getElementById('bio').style.display = 'flex';
+
+      const audio = document.getElementById('bgm');
+      audio.play();
+      document.body.onclick = null;
+
+      const volumeControl = document.getElementById('volume-control');
+      volumeControl.addEventListener('input', () => {
+        audio.volume = volumeControl.value;
+      });
+    }
+
+    // звЄзды
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let w, h, stars = [];
+
+    function init() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      stars = [];
+      for (let i = 0; i < 200; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          radius: Math.random() * 1.5,
+          dx: (Math.random() - 0.5) * 0.5,
+          dy: (Math.random() - 0.5) * 0.5
+        });
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#0ff';
+      for (let star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+        star.x += star.dx;
+        star.y += star.dy;
+
+        if (star.x < 0 || star.x > w) star.dx *= -1;
+        if (star.y < 0 || star.y > h) star.dy *= -1;
+      }
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', init);
+    init();
+    animate();
+  </script>
+</body>
+</html>
